@@ -1,0 +1,14 @@
+br.unifor.pin.brothercar.aspectj
+br.unifor.pin.brothercar.builder
+br.unifor.pin.brothercar.bussines
+br.unifor.pin.brothercar.converte
+br.unifor.pin.brothercar.dao
+br.unifor.pin.brothercar.entity
+br.unifor.pin.brothercar.exceptions
+br.unifor.pin.brothercar.manager.acompanha
+br.unifor.pin.brothercar.manager.carona
+br.unifor.pin.brothercar.manager.login
+br.unifor.pin.brothercar.manager.principal
+br.unifor.pin.brothercar.manager.usuario
+br.unifor.pin.brothercar.to
+br.unifor.pin.brothercar.utils
