@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -26,7 +28,9 @@ public class PontoParada {
 	@Column(nullable=false, length = 15)
 	private String longitude;
 	
-	
+	@ManyToOne
+	@JoinColumn(name = "caronas_id")
+	private Caronas carona;
 
 	public Integer getId() {
 		return id;
@@ -50,6 +54,14 @@ public class PontoParada {
 
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
+	}
+
+	public Caronas getCarona() {
+		return carona;
+	}
+
+	public void setCarona(Caronas carona) {
+		this.carona = carona;
 	}
 
 	@Override

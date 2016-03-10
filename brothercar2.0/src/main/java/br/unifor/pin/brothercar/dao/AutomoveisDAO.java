@@ -1,10 +1,15 @@
 package br.unifor.pin.brothercar.dao;
 
 import java.util.List;
+
 import javax.persistence.NoResultException;
+
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
+
 import br.unifor.pin.brothercar.entity.Automoveis;
+import br.unifor.pin.brothercar.entity.Usuarios;
+import br.unifor.pin.brothercar.exceptions.DAOException;
 
 
 @Repository
@@ -18,12 +23,12 @@ public class AutomoveisDAO extends GenericDAO<Integer, Automoveis>{
 		super.save(automovel);
 	}
 	
-	public boolean atualizarAutomovel(Automoveis automovel) {
+	public boolean atualizarAutomovel(Automoveis automovel) throws DAOException{
 		super.update(automovel);
 		return true;
 	}
 	
-	public boolean deletarAutomovel(Automoveis automovel) {
+	public boolean deletarAutomovel(Automoveis automovel) throws DAOException{
 		super.delete(automovel);
 		return true;
 	}
@@ -53,6 +58,19 @@ public class AutomoveisDAO extends GenericDAO<Integer, Automoveis>{
 		
 		try {
 			return (Automoveis)query.uniqueResult();
+		} catch(NoResultException e){
+			return null;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Automoveis> listarDoMotorista(Usuarios motorista) {
+		Query query = (Query) super.createQuery("from Automoveis a where a.motorista= :motorista");
+		query.setEntity("motorista", motorista);
+		
+		try {
+			List<Automoveis> automoveis = query.list();
+			return automoveis;
 		} catch(NoResultException e){
 			return null;
 		}

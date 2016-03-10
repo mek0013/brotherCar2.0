@@ -11,45 +11,65 @@ import br.unifor.pin.brothercar.aspectj.Loggable;
 import br.unifor.pin.brothercar.dao.PedidosDAO;
 import br.unifor.pin.brothercar.entity.Ofertas;
 import br.unifor.pin.brothercar.entity.Pedidos;
+import br.unifor.pin.brothercar.entity.PontoParada;
 import br.unifor.pin.brothercar.exceptions.BOException;
 import br.unifor.pin.brothercar.to.SegurancaTO;
 
 @Loggable
 @Service
-@Transactional(propagation=Propagation.REQUIRED)
 public class PedidosBO {
 
 	@Autowired
 	private PedidosDAO pedidosDAO;
-	
+
 	@Autowired
 	private SegurancaTO segurancaTO;
-	
-	public void salvar(Ofertas oferta, String pontoEscolhido) {
+
+	public void salvar(Ofertas oferta, PontoParada pontoEscolhido) {
 		Pedidos pedido = new Pedidos();
 		pedido.setOfertas(oferta);
 		pedido.setPontoEscolhido(pontoEscolhido);
 		pedido.setStatusPedido("AGUARDANDO");
-		pedido.setUsuario(segurancaTO.getUsuario());
-		pedidosDAO.salvar(pedido);
-		
+		pedido.setPassageiro(segurancaTO.getUsuario());
+		pedidosDAO.salvarPedido(pedido);
+
 	}
-	
-	public Pedidos listaPorOferta(Ofertas oferta) {
-		return pedidosDAO.listarPorStatus(oferta);
+
+	public void atualizar(Pedidos pedido) throws BOException {
+
+		try {
+			pedidosDAO.atualizarPedido(pedido);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new BOException("Não foi possivel atualizar seu pedido!");
+		}
 	}
-	
-	public List<Pedidos> listarPorUsuario() {
-		return pedidosDAO.listarPorUsuario(segurancaTO.getUsuario());
+
+	public void excluir(Pedidos pedido) throws BOException {
+
+		try {
+			pedidosDAO.deletarPedido(pedido);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new BOException("Não foi possivel excluir seu pedido!");
+		}
 	}
-	
+
+	public List<Pedidos> listaPedidoPorOferta(Ofertas oferta) {
+		return pedidosDAO.listarPedidosPorOferta(oferta);
+	}
+
+	public List<Pedidos> listarPedidosDoPassageiro() {
+		return pedidosDAO.listarPedidosDoPassageiro(segurancaTO.getUsuario());
+	}
+
 	public void confirmaPedido(Pedidos pedido) throws BOException {
-		pedido.setStatusPedido("ACEITOR");
-		pedidosDAO.atualizar(pedido);
+		pedido.setStatusPedido("ACEITO");
+		pedidosDAO.atualizarPedido(pedido);
 	}
-	
+
 	public void recusarPedido(Pedidos pedido) throws BOException {
 		pedido.setStatusPedido("RECUSADO");
-		pedidosDAO.atualizar(pedido);
+		pedidosDAO.atualizarPedido(pedido);
 	}
 }

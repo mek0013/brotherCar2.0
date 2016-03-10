@@ -9,10 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -27,6 +27,9 @@ public class Ofertas {
 	@Column(nullable=false)
 	private String statusOferta;
 	
+	@Column(nullable=false)
+	private String situacaoOferta;
+	
 	@Column(name = "data_oferta")
 	@Temporal(TemporalType.DATE)
 	private Date dataOferta;
@@ -38,12 +41,12 @@ public class Ofertas {
 	@Column
 	private Integer quantidadeVagas;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "caronas_id")
 	private Caronas carona;
 	
 	@ManyToOne
-	@JoinColumn(name = "motorista_id")
+	@JoinColumn(name = "usuarios_id")
 	private Usuarios motorista;
 
 
@@ -101,6 +104,14 @@ public class Ofertas {
 
 	public void setMotorista(Usuarios motorista) {
 		this.motorista = motorista;
+	}
+
+	public String getSituacaoOferta() {
+		return situacaoOferta;
+	}
+
+	public void setSituacaoOferta(String situacaoOferta) {
+		this.situacaoOferta = situacaoOferta;
 	}
 
 	@Override

@@ -2,15 +2,22 @@ package br.unifor.pin.brothercar.entity;
 
 
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+
+
 
 
 @XmlRootElement
@@ -25,13 +32,12 @@ public class Caronas {
 	@Column(name = "nome_trajeto", nullable = false)
 	private String nomeTrajeto;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "trajetos_id", nullable = false)
 	private Trajetos trajeto;
 	
-	@ManyToOne
-	@JoinColumn(name = "ponto_parada_id", nullable = false)
-	private PontoParada pontoParada;
+	@OneToMany(mappedBy = "carona", targetEntity = PontoParada.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<PontoParada> pontosParada;
 	
 	public Integer getId() {
 		return id;
@@ -55,6 +61,14 @@ public class Caronas {
 
 	public void setTrajeto(Trajetos trajeto) {
 		this.trajeto = trajeto;
+	}
+
+	public List<PontoParada> getPontosParada() {
+		return pontosParada;
+	}
+
+	public void setPontosParada(List<PontoParada> pontosParada) {
+		this.pontosParada = pontosParada;
 	}
 
 	@Override

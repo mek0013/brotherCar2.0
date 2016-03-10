@@ -43,7 +43,7 @@ public class PontoParadaDAO extends GenericDAO<Integer, PontoParada>{
 		return super.getById(id);
 	}
 	
-	public PontoParada buscarPorEmailSenha(String latitude, String longitude) {
+	public PontoParada buscarPorLatitudeLongitude(String latitude, String longitude) {
 		CriteriaBuilder criteriaBuilder = super.createCriteriaBuilder();
 		CriteriaQuery<PontoParada> criteriaQuery = criteriaBuilder.createQuery(PontoParada.class);
 		Root<PontoParada> pontoParada = criteriaQuery.from(PontoParada.class);

@@ -38,8 +38,8 @@ public class Automoveis implements Serializable{
 	private String placa;
 	
 	@ManyToOne
-	@JoinColumn(name = "usuarios_id")
-	private Usuarios usuario;
+	@JoinColumn(name = "usuarios_id", nullable = false)
+	private Usuarios motorista;
 
 	public Integer getId() {
 		return id;
@@ -75,11 +75,11 @@ public class Automoveis implements Serializable{
 	
 
 	public Usuarios getUsuario() {
-		return usuario;
+		return motorista;
 	}
 
 	public void setUsuario(Usuarios usuario) {
-		this.usuario = usuario;
+		this.motorista = usuario;
 	}
 
 	@Override

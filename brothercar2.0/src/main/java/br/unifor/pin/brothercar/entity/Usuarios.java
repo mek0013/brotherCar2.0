@@ -4,12 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -63,11 +64,9 @@ public class Usuarios implements Serializable {
 
 	@Column(nullable = false)
 	private boolean administrador;
-	
-	@OneToMany(mappedBy = "usuario")
-	@JoinColumn(name = "automoveis_id", nullable = true)
-	private List<Automoveis> automovel;
 
+	@OneToMany(mappedBy = "motorista", targetEntity = Ofertas.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Ofertas> ofertas;
 
 	public Integer getId() {
 		return id;
@@ -165,18 +164,12 @@ public class Usuarios implements Serializable {
 		this.administrador = administrador;
 	}
 
-
-	public List<Automoveis> getAutomovel() {
-		return automovel;
+	public List<Ofertas> getOfertas() {
+		return ofertas;
 	}
 
-	public void setAutomovel(List<Automoveis> automovel) {
-		this.automovel = automovel;
-	}
-	
-	public void adicionarAutomovel( Automoveis automovel) {
-		this.automovel.add(automovel);
-		automovel.setUsuario(this);
+	public void setOfertas(List<Ofertas> ofertas) {
+		this.ofertas = ofertas;
 	}
 
 	/*

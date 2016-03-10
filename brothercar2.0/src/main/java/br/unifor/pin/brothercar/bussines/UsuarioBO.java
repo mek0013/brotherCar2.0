@@ -34,26 +34,26 @@ public class UsuarioBO {
 			throw new BOException("Email já cadastrado.");
 		}
 		
-		Usuarios usuarioComMatriculaJaCadastrada = usuarioDAO.buscarPorMatricula(usuario.getMatricula());
-		if(usuarioComMatriculaJaCadastrada != null){
-			throw new BOException("Matricula já cadastrada.");
+		Usuarios usuarioComCpfCadastrado = usuarioDAO.buscarPorCpf(usuario.getCpf());
+		if(usuarioComCpfCadastrado != null){
+			throw new BOException("CPF já cadastrada.");
 		}
 		
-		usuarioDAO.salvar(usuario);
+		usuarioDAO.salvarUsuario(usuario);
 	}
 
 	public void atualizar(Usuarios usuario) {
-		usuarioDAO.atualizar(usuario);
+		usuarioDAO.atualizarUsuario(usuario);
 	}
 
 	@Loggable(enable = false)
-	public Usuarios loggar(String matricula, String senha) {
-		return usuarioDAO.buscarPorMatriculaSenha(matricula, senha);
+	public Usuarios loggar(String email, String senha) {
+		return usuarioDAO.buscarPorEmailSenha(email, senha);
 	}
 
 	@Loggable(enable = false)
-	public Usuarios buscarUsuariosPorMatricula(String matricula) {
-		return usuarioDAO.buscarPorMatricula(matricula);
+	public Usuarios buscarUsuariosPorCpf(String cpf) {
+		return usuarioDAO.buscarPorCpf(cpf);
 	}
 
 	@Loggable(enable = false)
@@ -63,20 +63,15 @@ public class UsuarioBO {
 	}
 
 	@Loggable(enable = false)
-	public Usuarios buscarPorId(Integer id) {
-		try {
-			return usuarioDAO.buscaPorId(id);
-		} catch (DAOException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public Usuarios buscarPorId(Integer id) throws DAOException {
+		return usuarioDAO.buscarPorId(id);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void excluir(Usuarios usuario) throws BOException{
 		try {
 			usuario.setAtivo(false);
-			usuarioDAO.atualizar(usuario);
+			usuarioDAO.atualizarUsuario(usuario);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new BOException("Não foi possível excluir sua conta.");

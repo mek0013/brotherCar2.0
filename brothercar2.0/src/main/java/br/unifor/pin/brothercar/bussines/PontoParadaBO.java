@@ -1,7 +1,5 @@
 package br.unifor.pin.brothercar.bussines;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,28 +16,36 @@ public class PontoParadaBO {
 	@Autowired
 	private PontoParadaDAO pontoParadaDao;
 	
-	public void salvar(PontoParada pontoParada) throws BOException {
+	public void salvar(PontoParada pontoParada) {
 		
-		PontoParada pontoParadaComReferencia = pontoParadaDao.buscarPorReferencia(pontoParada.getReferencia());
+		pontoParadaDao.salvarPontoParada(pontoParada);
+	}
+	
+	public void atualizar(PontoParada pontoParada) throws BOException {
 		
-		if (pontoParadaComReferencia != null) {
-			throw new BOException("Ponto de parada ja existe!");
-			
+		try {
+			pontoParadaDao.atualizarPontoParada(pontoParada);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new BOException("Não foi possivel atualiza seu ponto de parada!");
 		}
-		pontoParadaDao.salva(pontoParada);
-	}
-	
-	public List<PontoParada> listaPorReferencia(String logradouro) {
-		return pontoParadaDao.listaPorReferencia(logradouro);
-	}
-	
-	public void atualizar(PontoParada pontoParada) {
-		pontoParadaDao.atualizar(pontoParada);
 		
 	}
 	
-	public void excluir(PontoParada pontoParada) {
-		pontoParadaDao.excluir(pontoParada);
+	public void excluir(PontoParada pontoParada) throws BOException {
+		
+		try {
+			pontoParadaDao.deletarPontoParada(pontoParada);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new BOException("Não foi possivel excluir seu ponto de parada!");
+		}
 		
 	}
+	
+	public PontoParada buscarPorLatitudeLongitude(String latitude, String longitude) {
+		return pontoParadaDao.buscarPorLatitudeLongitude(latitude, longitude);
+	}
+	
+	
 }

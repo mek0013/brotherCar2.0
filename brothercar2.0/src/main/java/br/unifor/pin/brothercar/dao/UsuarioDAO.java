@@ -69,6 +69,19 @@ public class UsuarioDAO extends GenericDAO<Integer, Usuarios>{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Usuarios> listarPorNome(String nomeUsuario) {
+		Query query = (Query) super.createQuery("from Usuarios u where u.nome=?");
+		query.setString(0, nomeUsuario);
+		
+		try {
+			List<Usuarios> usuarios = query.list();
+			return usuarios;
+		} catch(NoResultException e){
+			return null;
+		}
+	}
+	
 	public Usuarios buscarPorEmailSenha(String email, String senha) {
 		CriteriaBuilder criteriaBuilder = super.createCriteriaBuilder();
 		CriteriaQuery<Usuarios> criteriaQuery = criteriaBuilder.createQuery(Usuarios.class);

@@ -28,7 +28,7 @@ public class Pedidos {
 	private String statusPedido;
 	
 	@OneToOne
-	@JoinColumn(name="passageiros_id", nullable=false)
+	@JoinColumn(name="usuarios_id", nullable=false)
 	private Usuarios passageiro;
 	
 	@ManyToOne

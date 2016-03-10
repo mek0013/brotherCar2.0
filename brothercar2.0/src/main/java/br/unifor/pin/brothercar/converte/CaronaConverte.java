@@ -29,7 +29,7 @@ public class CaronaConverte implements Converter {
 
          try {
                
-             Caronas carona = caronaDAO.buscar(Integer.valueOf(value));
+             Caronas carona = caronaDAO.buscarPorId(Integer.valueOf(value));
              
              return carona;
          } catch (Exception e) {
