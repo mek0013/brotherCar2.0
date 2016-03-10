@@ -4,15 +4,10 @@ package br.unifor.pin.brothercar.dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.unifor.pin.brothercar.entity.Ofertas;
 import br.unifor.pin.brothercar.entity.Pedidos;
@@ -21,48 +16,57 @@ import br.unifor.pin.brothercar.entity.Usuarios;
 
 
 @Repository
-@Transactional(propagation = Propagation.REQUIRED)
-public class PedidosDAO {
+public class PedidosDAO extends GenericDAO<Integer, Pedidos>{
 
-	@PersistenceContext
-	private EntityManager entityManager;
-	
-	public void salvar(Pedidos pedido) {
-		entityManager.persist(pedido);
+	public PedidosDAO() {
+		super(Pedidos.class);
 	}
 	
-	public void atualizar(Pedidos pedido) {
-		entityManager.merge(pedido);
+	public void salvarPedido(Pedidos pedido) {
+		super.save(pedido);
 	}
 	
-	public void excluir(Pedidos pedido) {
-		entityManager.remove(pedido);
-		
+	public boolean atualizarPedido(Pedidos pedido) {
+		super.update(pedido);
+		return true;
 	}
 	
-	public Pedidos listarPorStatus(Ofertas ofertas){
-		String jpql = "select p from Pedidos p where p.ofertas = :ofertas";
-		TypedQuery<Pedidos> query = entityManager.createQuery(jpql,Pedidos.class);
-		query.setParameter("ofertas", ofertas);
+	public boolean deletarPedido(Pedidos pedido) {
+		super.delete(pedido);
+		return true;
+	}
+	
+	public List<Pedidos> listarTodasOfertas() {
+		return super.findAll();
+	}
+	
+	public Pedidos buscarPorId(Integer id) {
+		return super.getById(id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Pedidos> listarPedidosDoPassageiro(Usuarios passageiro) {
+		Query query = (Query) super.createQuery("from Pedidos o where o.passageiro= :passageiro");
+		query.setParameter("passageiro", passageiro);
 		
 		try {
-			return query.getSingleResult();
+			List<Pedidos> pedidos = query.list();
+			return pedidos;
 		} catch(NoResultException e){
 			return null;
-		} 
-		
+		}
 	}
 	
-	public List<Pedidos> listarPorUsuario(Usuarios usuario){
-		String jpql = "select p from Pedidos p where p.usuario = :usuario and p.usuario.ativo = true";
-		TypedQuery<Pedidos> query = entityManager.createQuery(jpql,Pedidos.class);
-		query.setParameter("usuario", usuario);
+	@SuppressWarnings("unchecked")
+	public List<Pedidos> listarPedidosPorOferta(Ofertas oferta) {
+		Query query = (Query) super.createQuery("from Pedidos o where o.oferta= :oferta");
+		query.setParameter("oferta", oferta);
 		
 		try {
-			return query.getResultList();
+			List<Pedidos> pedidos = query.list();
+			return pedidos;
 		} catch(NoResultException e){
 			return null;
-		} 
-		
+		}
 	}
 }

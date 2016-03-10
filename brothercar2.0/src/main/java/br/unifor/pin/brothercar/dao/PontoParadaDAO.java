@@ -2,78 +2,63 @@ package br.unifor.pin.brothercar.dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import br.unifor.pin.brothercar.entity.PontoParada;
-import br.unifor.pin.brothercar.entity.Usuarios;
 
 
 @Repository
-public class PontoParadaDAO {
+public class PontoParadaDAO extends GenericDAO<Integer, PontoParada>{
 	
-	@PersistenceContext
-	private EntityManager entityManager;
-	
-	public void salva(PontoParada pontoParada) {
-		entityManager.persist(pontoParada);
+	public PontoParadaDAO() {
+		super(PontoParada.class);
 	}
 	
-	public void atualizar(PontoParada pontoParada) {
-		entityManager.merge(pontoParada);
+	public void salvarPontoParada(PontoParada pontoParada) {
+		super.save(pontoParada);
 	}
 	
-	public PontoParada buscarPorReferencia(String referencia){
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+	public boolean atualizarPontoParada(PontoParada pontoParada) {
+		super.update(pontoParada);
+		return true;
+	}
+	
+	public boolean deletarPontoParada(PontoParada pontoParada) {
+		super.delete(pontoParada);
+		return true;
+	}
+	
+	public List<PontoParada> listarTodosPontoParada() {
+		return super.findAll();
+	}
+	
+	public PontoParada buscarPorId(Integer id) {
+		return super.getById(id);
+	}
+	
+	public PontoParada buscarPorEmailSenha(String latitude, String longitude) {
+		CriteriaBuilder criteriaBuilder = super.createCriteriaBuilder();
 		CriteriaQuery<PontoParada> criteriaQuery = criteriaBuilder.createQuery(PontoParada.class);
 		Root<PontoParada> pontoParada = criteriaQuery.from(PontoParada.class);
-		criteriaQuery.where(criteriaBuilder.equal(pontoParada.<String>get("referencia"), referencia));
+		Predicate restriction = criteriaBuilder.and(
+				criteriaBuilder.equal(pontoParada.<String>get("latitude"), latitude),
+				criteriaBuilder.equal(pontoParada.<String>get("longitude"), longitude)
+			);
+		criteriaQuery.where(criteriaBuilder.and(restriction));
 		
-		Query query = entityManager.createQuery(criteriaQuery);
+		Query query = (Query) super.createQuery(criteriaQuery);
 		try {
-			return (PontoParada)query.getSingleResult();
+			return (PontoParada)query.uniqueResult();
 		} catch(NoResultException e){
 			return null;
 		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<PontoParada> listaPorReferencia(String logradouro){
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<PontoParada> criteriaQuery = criteriaBuilder.createQuery(PontoParada.class);
-		Root<PontoParada> pontoParada = criteriaQuery.from(PontoParada.class);
-		criteriaQuery.where(criteriaBuilder.equal(pontoParada.<String>get("logradouro"),logradouro));
-		
-		Query query = entityManager.createQuery(criteriaQuery);
-		try {
-			return query.getResultList();
-		} catch(NoResultException e){
-			return null;
-		}
-	}
-	
-	
-	public PontoParada buscaPorId(Integer id) {
-		String jpql = "select p from ponto_parada p where p.id = :id";
-		Query query = entityManager.createQuery(jpql);
-		query.setParameter("id", id);
-		
-		try {
-			return (PontoParada) query.getSingleResult();
-		} catch(NoResultException e){
-			return null;
-		} 
-	}
-	
-	public void excluir(PontoParada pontoParada) {
-		entityManager.remove(pontoParada);
 	}
 
 }

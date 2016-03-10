@@ -1,18 +1,17 @@
 package br.unifor.pin.brothercar.entity;
 
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
-import org.hibernate.engine.internal.Cascade;
 
-
+@XmlRootElement
 @Entity
 @Table(name="ponto_parada")
 public class PontoParada {

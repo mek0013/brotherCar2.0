@@ -2,68 +2,76 @@ package br.unifor.pin.brothercar.dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.unifor.pin.brothercar.entity.Caronas;
-import br.unifor.pin.brothercar.entity.Ofertas;
-import br.unifor.pin.brothercar.entity.Usuarios;
+import br.unifor.pin.brothercar.entity.PontoParada;
+import br.unifor.pin.brothercar.entity.Trajetos;
+
 
 
 @Repository
-@Transactional(propagation = Propagation.REQUIRED)
-public class CaronasDAO {
+public class CaronasDAO extends GenericDAO<Integer, Caronas>{
 
-	@PersistenceContext
-	private EntityManager entityManager;
-	
-	public void salvar(Caronas caronas) {
-		entityManager.persist(caronas);
+	public CaronasDAO() {
+		super(Caronas.class);
 	}
 	
-	public void atualizar(Caronas caronas) {
-		entityManager.merge(caronas);
+	public void salvarCarona(Caronas carona) {
+		super.save(carona);
 	}
 	
-	public void excluir(Caronas caronas) {
-		entityManager.remove(caronas);
-		
+	public boolean atualizarCarona(Caronas carona) {
+		super.update(carona);
+		return true;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Caronas> listarTodos() {
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Caronas> criteriaQuery = criteriaBuilder.createQuery(Caronas.class);
-		Root<Caronas> carona = criteriaQuery.from(Caronas.class);
-		
-		Query query = entityManager.createQuery(criteriaQuery.select(carona));
-		return query.getResultList();
+	public boolean deletarCarona(Caronas carona) {
+		super.delete(carona);
+		return true;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Caronas> listaPorUsuario(Usuarios usuario) {
-		String jpql = "select c from Caronas c where c.usuario = :usuarios";
-		Query query = entityManager.createQuery(jpql,Caronas.class);
-		query.setParameter("usuarios", usuario);
+	public List<Caronas> listarTodasCaronas() {
+		return super.findAll();
+	}
+	
+	public Caronas buscarPorId(Integer id) {
+		return super.getById(id);
+	}
+	
+	public Caronas buscarPorNomeTrajeto(String nomeTrajeto) {
+		Query query = (Query) super.createQuery("from Caronas c where c.nome_trajeto=?");
+		query.setString(0, nomeTrajeto);
 		
 		try {
-			return query.getResultList();
+			return (Caronas)query.uniqueResult();
 		} catch(NoResultException e){
 			return null;
-		} 
+		}
 	}
 	
-	public Caronas buscar(Integer id) {
-		return entityManager.find(Caronas.class, id);
+	public Caronas buscarPorTrajeto(Trajetos trajeto) {
+		Query query = (Query) super.createQuery("from Caronas c where c.trajeto= :trajeto");
+		query.setEntity("trajeto", trajeto);
+		
+		try {
+			return (Caronas)query.uniqueResult();
+		} catch(NoResultException e){
+			return null;
+		}
 	}
 	
+	public Caronas buscarPorPontoParada(PontoParada pontoParada) {
+		Query query = (Query) super.createQuery("from Caronas c where c.pontoParada= :pontoParada");
+		query.setEntity("pontoParada", pontoParada);
+		
+		try {
+			return (Caronas)query.uniqueResult();
+		} catch(NoResultException e){
+			return null;
+		}
+	}
 }

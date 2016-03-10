@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -66,7 +65,7 @@ public class Usuarios implements Serializable {
 	private boolean administrador;
 	
 	@OneToMany(mappedBy = "usuario")
-	@JoinColumn(name = "automoveis_id", nullable = false)
+	@JoinColumn(name = "automoveis_id", nullable = true)
 	private List<Automoveis> automovel;
 
 
