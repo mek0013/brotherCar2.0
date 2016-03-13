@@ -78,5 +78,13 @@ public class UsuarioBO {
 		}
 	}
 	
+	public void atribuirPerfilUsuario(String perfil) {
+		if (perfil.equals("Motorista")) {
+			
+		} else if (perfil.equals("Passageiro")){
+
+		}
+	}
+	
 
 }

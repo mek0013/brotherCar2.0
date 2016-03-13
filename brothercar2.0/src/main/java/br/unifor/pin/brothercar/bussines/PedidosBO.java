@@ -25,7 +25,7 @@ public class PedidosBO {
 	@Autowired
 	private SegurancaTO segurancaTO;
 
-	public void salvar(Ofertas oferta, PontoParada pontoEscolhido) {
+	public void salvar(Ofertas oferta, Integer pontoEscolhido) {
 		Pedidos pedido = new Pedidos();
 		pedido.setOfertas(oferta);
 		pedido.setPontoEscolhido(pontoEscolhido);

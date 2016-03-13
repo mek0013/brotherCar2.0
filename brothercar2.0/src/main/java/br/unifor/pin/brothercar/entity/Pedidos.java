@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -22,7 +22,7 @@ public class Pedidos {
 	private Integer id;
 	
 	@Column(name = "ponto_escolhido_id")
-	private PontoParada pontoEscolhido;
+	private Integer pontoEscolhido;
 	
 	@Column
 	private String statusPedido;
@@ -44,11 +44,11 @@ public class Pedidos {
 		this.id = id;
 	}
 
-	public PontoParada getPontoEscolhido() {
+	public Integer getPontoEscolhido() {
 		return pontoEscolhido;
 	}
 
-	public void setPontoEscolhido(PontoParada pontoEscolhido) {
+	public void setPontoEscolhido(Integer pontoEscolhido) {
 		this.pontoEscolhido = pontoEscolhido;
 	}
 

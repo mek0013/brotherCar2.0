@@ -8,13 +8,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
 import org.hibernate.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-@Repository
+@Component
 @Transactional(propagation = Propagation.REQUIRED)
 public class GenericDAO<ID, T> {
 
@@ -22,6 +22,10 @@ public class GenericDAO<ID, T> {
 	private EntityManager entityManager;
 	
 	private Class<T> clazz;
+	
+	public GenericDAO() {
+		
+	}
 	
 	public GenericDAO(Class<T> clazz) {
 		this.clazz = clazz;
