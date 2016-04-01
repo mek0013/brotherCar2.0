@@ -2,6 +2,8 @@ package br.unifor.pin.brothercar.entity;
 
 
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +18,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @Entity
 @Table(name="ponto_parada")
-public class PontoParada {
+public class PontoParada implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -29,8 +36,8 @@ public class PontoParada {
 	private String longitude;
 	
 	@ManyToOne
-	@JoinColumn(name = "caronas_id")
-	private Caronas carona;
+	@JoinColumn(name = "trajeto_id")
+	private Trajetos trajeto;
 
 	public Integer getId() {
 		return id;
@@ -56,12 +63,12 @@ public class PontoParada {
 		this.longitude = longitude;
 	}
 
-	public Caronas getCarona() {
-		return carona;
+	public Trajetos getTrajeto() {
+		return trajeto;
 	}
 
-	public void setCarona(Caronas carona) {
-		this.carona = carona;
+	public void setTrajeto(Trajetos trajeto) {
+		this.trajeto = trajeto;
 	}
 
 	@Override

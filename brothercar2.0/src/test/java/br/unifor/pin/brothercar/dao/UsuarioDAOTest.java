@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import br.unifor.pin.brothercar.bussines.UsuarioBO;
 import br.unifor.pin.brothercar.dao.UsuarioDAO;
 import br.unifor.pin.brothercar.entity.Ofertas;
 import br.unifor.pin.brothercar.entity.Usuarios;
@@ -25,25 +24,6 @@ public class UsuarioDAOTest {
 
 	@Test
 	public void testSalvar() throws Exception {
-		
-		Usuarios usuario = new Usuarios();
-		usuario.setNome("neto");
-		usuario.setSenha("123456");
-		usuario.setEmail("neto@gmail.com");
-		usuario.setAtivo(true);
-		usuario.setAdministrador(false);
-		usuario.setCnh(null);
-		usuario.setCpf("00000000000");
-		usuario.setDataNascimento(new Date(0, 0, 0));
-		usuario.setMoedas(0);
-		usuario.setQuantidadePontos(null);
-		usuario.setOfertas(new ArrayList<Ofertas>());
-		usuario.setPerfil("M");
-		
-		usuarioDao.salvarUsuario(usuario);
-		
-		Assert.assertNotNull(usuario.getId());
-		System.out.println(usuario.getId());
 		
 		
 	}

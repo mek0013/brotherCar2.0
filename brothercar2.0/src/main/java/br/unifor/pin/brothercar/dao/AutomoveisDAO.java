@@ -5,33 +5,43 @@ import java.util.List;
 import javax.persistence.NoResultException;
 
 import org.hibernate.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.unifor.pin.brothercar.entity.Automoveis;
-import br.unifor.pin.brothercar.entity.Usuarios;
-import br.unifor.pin.brothercar.exceptions.DAOException;
+import br.unifor.pin.brothercar.entity.Motoristas;
 
+
+/**
+ * @author maycon
+ * @since 16/03/2016*/
 
 @Repository
 public class AutomoveisDAO extends GenericDAO<Integer, Automoveis>{
 
+	/**
+	 * Construtor para inicializa o contrutror da classe pai,
+	 * passando o tipo (Automoveis).
+	 * */
 	public AutomoveisDAO() {
 		super(Automoveis.class);
 	}
 	
-	public void salvarAutomovel(Automoveis automovel) {
+	/**
+	 * @param Automoveis
+	 * @return void
+	 * Salvar, Atualiza, Deletar e Listar todos os Automoveis.
+	 */
+	
+	public void salvarAutomoveis(Automoveis automovel) {
 		super.save(automovel);
 	}
 	
-	public boolean atualizarAutomovel(Automoveis automovel) throws DAOException{
+	public void atualizarAutomoveis(Automoveis automovel) {
 		super.update(automovel);
-		return true;
 	}
 	
-	public boolean deletarAutomovel(Automoveis automovel) throws DAOException{
+	public void deletarAutomoveis(Automoveis automovel) {
 		super.delete(automovel);
-		return true;
 	}
 	
 	public List<Automoveis> listarTodosAutomoveis() {
@@ -42,16 +52,11 @@ public class AutomoveisDAO extends GenericDAO<Integer, Automoveis>{
 		return super.getById(id);
 	}
 	
-	public Automoveis buscarPorModelo(String modelo) {
-		Query query = (Query) super.createQuery("from Automoveis a where a.modelo=?");
-		query.setString(0, modelo);
-		
-		try {
-			return (Automoveis)query.uniqueResult();
-		} catch(NoResultException e){
-			return null;
-		}
-	}
+	/**
+	 * @param placa
+	 * @return Automoveis
+	 * Retorna o automovel pela placa.
+	 */
 	
 	public Automoveis buscarPorPlaca(String placa) {
 		Query query = (Query) super.createQuery("from Automoveis a where a.placa=?");
@@ -64,14 +69,37 @@ public class AutomoveisDAO extends GenericDAO<Integer, Automoveis>{
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Automoveis> listarDoMotorista(Usuarios motorista) {
-		Query query = (Query) super.createQuery("from Automoveis a where a.motorista= :motorista");
-		query.setEntity("motorista", motorista);
+	/**
+	 * @param modelo
+	 * @return Automoveis
+	 * Retorna o automovel pelo modelo.
+	 */
+	
+	public Automoveis buscarPorModelo(String modelo) {
+		Query query = (Query) super.createQuery("from Automoveis a where a.modelo=?");
+		query.setString(0, modelo);
 		
 		try {
-			List<Automoveis> automoveis = query.list();
-			return automoveis;
+			return (Automoveis)query.uniqueResult();
+		} catch(NoResultException e){
+			return null;
+		}
+	}
+	
+	/**
+	 * @param Motorista
+	 * @return List<Automoveis>
+	 * Retorna uma lista de todos os automoveis do motorista.
+	 */
+	
+	@SuppressWarnings("unchecked")
+	public List<Automoveis> listarPorMotorista(Motoristas motorista) {
+		Query query = (Query) super.createQuery("from Automoveis a where a.motorista= :motorista");
+		query.setEntity(0, motorista);
+		
+		try {
+			List<Automoveis> listaAutomoveis = query.list();
+			return listaAutomoveis;
 		} catch(NoResultException e){
 			return null;
 		}

@@ -1,12 +1,15 @@
 package br.unifor.pin.brothercar.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,17 +28,23 @@ public class Trajetos implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	@Column(name = "latitude_inicial", nullable = false, length = 15)
-	private String latitudeInicial;
+	@Column(name = "nome_trajeto", nullable = false)
+	private String nomeTrajeto;
 	
-	@Column(name = "longitude_inicial", nullable = false, length = 15)
-	private String longitudeInicial;
+	@Column(name = "latitude_saida", nullable = false, length = 15)
+	private String latitudeSaida;
 	
-	@Column(name = "latitude_final", nullable = false, length = 15)
-	private String latitudeFinal;
+	@Column(name = "longitude_saida", nullable = false, length = 15)
+	private String longitudeSaida;
 	
-	@Column(name = "longitude_final", nullable = false, length = 15)
-	private String longitudeFinal;
+	@Column(name = "latitude_chegada", nullable = false, length = 15)
+	private String latitudeChegada;
+	
+	@Column(name = "longitude_chegada", nullable = false, length = 15)
+	private String longitudeChegada;
+	
+	@OneToMany(mappedBy = "trajeto", fetch = FetchType.EAGER)
+	private List<PontoParada> listaPontos;
 
 	public Integer getId() {
 		return id;
@@ -45,36 +54,52 @@ public class Trajetos implements Serializable{
 		this.id = id;
 	}
 
-	public String getLatitudeInicial() {
-		return latitudeInicial;
+	public String getNomeTrajeto() {
+		return nomeTrajeto;
 	}
 
-	public void setLatitudeInicial(String latitudeInicial) {
-		this.latitudeInicial = latitudeInicial;
+	public void setNomeTrajeto(String nomeTrajeto) {
+		this.nomeTrajeto = nomeTrajeto;
 	}
 
-	public String getLongitudeInicial() {
-		return longitudeInicial;
+	public String getLatitudeSaida() {
+		return latitudeSaida;
 	}
 
-	public void setLongitudeInicial(String longitudeInicial) {
-		this.longitudeInicial = longitudeInicial;
+	public void setLatitudeSaida(String latitudeSaida) {
+		this.latitudeSaida = latitudeSaida;
 	}
 
-	public String getLatitudeFinal() {
-		return latitudeFinal;
+	public String getLongitudeSaida() {
+		return longitudeSaida;
 	}
 
-	public void setLatitudeFinal(String latitudeFinal) {
-		this.latitudeFinal = latitudeFinal;
+	public void setLongitudeSaida(String longitudeSaida) {
+		this.longitudeSaida = longitudeSaida;
 	}
 
-	public String getLongitudeFinal() {
-		return longitudeFinal;
+	public String getLatitudeChegada() {
+		return latitudeChegada;
 	}
 
-	public void setLongitudeFinal(String longitudeFinal) {
-		this.longitudeFinal = longitudeFinal;
+	public void setLatitudeChegada(String latitudeChegada) {
+		this.latitudeChegada = latitudeChegada;
+	}
+
+	public String getLongitudeChegada() {
+		return longitudeChegada;
+	}
+
+	public void setLongitudeChegada(String longitudeChegada) {
+		this.longitudeChegada = longitudeChegada;
+	}
+
+	public List<PontoParada> getListaPontos() {
+		return listaPontos;
+	}
+
+	public void setListaPontos(List<PontoParada> listaPontos) {
+		this.listaPontos = listaPontos;
 	}
 
 	@Override

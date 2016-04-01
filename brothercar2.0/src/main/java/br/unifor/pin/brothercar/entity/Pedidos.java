@@ -24,16 +24,16 @@ public class Pedidos {
 	@Column(name = "ponto_escolhido_id")
 	private Integer pontoEscolhido;
 	
-	@Column
+	@Column(nullable = false)
 	private String statusPedido;
 	
 	@OneToOne
 	@JoinColumn(name="usuarios_id", nullable=false)
-	private Usuarios passageiro;
+	private Passageiros passageiro;
 	
 	@ManyToOne
 	@JoinColumn(name="ofertas_id", nullable = false)
-	private Ofertas ofertas;
+	private Ofertas oferta;
 
 
 	public Integer getId() {
@@ -60,20 +60,20 @@ public class Pedidos {
 		this.statusPedido = statusPedido;
 	}
 
-	public Usuarios getPassageiro() {
+	public Passageiros getPassageiro() {
 		return passageiro;
 	}
 
-	public void setPassageiro(Usuarios passageiro) {
+	public void setPassageiro(Passageiros passageiro) {
 		this.passageiro = passageiro;
 	}
 
 	public Ofertas getOfertas() {
-		return ofertas;
+		return oferta;
 	}
 
-	public void setOfertas(Ofertas ofertas) {
-		this.ofertas = ofertas;
+	public void setOfertas(Ofertas oferta) {
+		this.oferta = oferta;
 	}
 
 	@Override

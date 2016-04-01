@@ -13,35 +13,53 @@ import org.springframework.stereotype.Repository;
 
 import br.unifor.pin.brothercar.entity.PontoParada;
 
+/**
+ * @author maycon
+ * @since 16/03/2016
+ */
 
 @Repository
 public class PontoParadaDAO extends GenericDAO<Integer, PontoParada>{
-	
+
+	/**
+	 * Construtor para inicializa o contrutror da classe pai,
+	 * passando o tipo (PontoParada).
+	 * */
 	public PontoParadaDAO() {
 		super(PontoParada.class);
 	}
 	
-	public void salvarPontoParada(PontoParada pontoParada) {
-		super.save(pontoParada);
+	/**
+	 * @param PontoParada
+	 * @return void
+	 * Salvar, Atualiza, Deletar e Listar todos os PontosParada.
+	 */
+	
+	public void salvarPontoParada(PontoParada ponto) {
+		super.save(ponto);
 	}
 	
-	public boolean atualizarPontoParada(PontoParada pontoParada) {
-		super.update(pontoParada);
-		return true;
+	public void atualizarPontoParada(PontoParada ponto) {
+		super.update(ponto);
 	}
 	
-	public boolean deletarPontoParada(PontoParada pontoParada) {
-		super.delete(pontoParada);
-		return true;
+	public void deletarPontoParada(PontoParada ponto) {
+		super.delete(ponto);
 	}
 	
-	public List<PontoParada> listarTodosPontoParada() {
+	public List<PontoParada> listarTodosAutomoveis() {
 		return super.findAll();
 	}
 	
 	public PontoParada buscarPorId(Integer id) {
 		return super.getById(id);
 	}
+	
+	/**
+	 * @param latitude, longitude
+	 * @return PontoParada
+	 * Busca um PontoParada pela latitude e longitude
+	 */
 	
 	public PontoParada buscarPorLatitudeLongitude(String latitude, String longitude) {
 		CriteriaBuilder criteriaBuilder = super.createCriteriaBuilder();
@@ -60,5 +78,4 @@ public class PontoParadaDAO extends GenericDAO<Integer, PontoParada>{
 			return null;
 		}
 	}
-
 }

@@ -1,7 +1,5 @@
 package br.unifor.pin.brothercar.dao;
 
-
-
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -9,34 +7,43 @@ import javax.persistence.NoResultException;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
-import br.unifor.pin.brothercar.entity.Ofertas;
+import br.unifor.pin.brothercar.entity.Passageiros;
 import br.unifor.pin.brothercar.entity.Pedidos;
-import br.unifor.pin.brothercar.entity.Usuarios;
 
-
+/**
+ * @author maycon
+ * @since 16/03/2016*/
 
 @Repository
 public class PedidosDAO extends GenericDAO<Integer, Pedidos>{
 
+	/**
+	 * Construtor para inicializa o contrutror da classe pai,
+	 * passando o tipo (Pedidos).
+	 * */
 	public PedidosDAO() {
 		super(Pedidos.class);
 	}
 	
-	public void salvarPedido(Pedidos pedido) {
+	/**
+	 * @param Pedidos
+	 * @return void
+	 * Salvar, Atualiza, Deletar e Listar todos os Pedidos.
+	 */
+	
+	public void salvarPedidos(Pedidos pedido) {
 		super.save(pedido);
 	}
 	
-	public boolean atualizarPedido(Pedidos pedido) {
+	public void atualizarPedidos(Pedidos pedido) {
 		super.update(pedido);
-		return true;
 	}
 	
-	public boolean deletarPedido(Pedidos pedido) {
+	public void deletarPedidos(Pedidos pedido) {
 		super.delete(pedido);
-		return true;
 	}
 	
-	public List<Pedidos> listarTodasOfertas() {
+	public List<Pedidos> listarTodosPedidos() {
 		return super.findAll();
 	}
 	
@@ -44,27 +51,35 @@ public class PedidosDAO extends GenericDAO<Integer, Pedidos>{
 		return super.getById(id);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Pedidos> listarPedidosDoPassageiro(Usuarios passageiro) {
-		Query query = (Query) super.createQuery("from Pedidos o where o.passageiro= :passageiro");
-		query.setParameter("passageiro", passageiro);
+	/**
+	 * @param statusPedidos
+	 * @return Pedidos
+	 * Retorna o Pedido pelo status.
+	 */
+	
+	public Pedidos buscarPorStatusPedidos(String statusOferta) {
+		Query query = (Query) super.createQuery("from Pedidos p where p.statusPedido=?");
+		query.setString(0, statusOferta);
 		
 		try {
-			List<Pedidos> pedidos = query.list();
-			return pedidos;
+			return (Pedidos)query.uniqueResult();
 		} catch(NoResultException e){
 			return null;
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Pedidos> listarPedidosPorOferta(Ofertas oferta) {
-		Query query = (Query) super.createQuery("from Pedidos o where o.oferta= :oferta");
-		query.setParameter("oferta", oferta);
+	/**
+	 * @param passageiro
+	 * @return Pedidos
+	 * Retorna o Pedidos pelo passageiro.
+	 */
+	
+	public Pedidos buscarPeloPassageiro(Passageiros passageiro) {
+		Query query = (Query) super.createQuery("from Pedidos p where p.passageiro=?");
+		query.setEntity(0, passageiro);
 		
 		try {
-			List<Pedidos> pedidos = query.list();
-			return pedidos;
+			return (Pedidos)query.uniqueResult();
 		} catch(NoResultException e){
 			return null;
 		}

@@ -12,31 +12,40 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import br.unifor.pin.brothercar.entity.Usuarios;
-
 /**
- * @author maycon.douglas
- * @since 09/03/2016
+ * @author maycon
+ * @since 16/03/2016
+ * 
  */
 
 @Repository
-public class UsuarioDAO extends GenericDAO<Integer, Usuarios>{
+public class UsuarioDAO extends GenericDAO<Integer, Usuarios> {
 
+	
+	/**
+	 * Construtor para inicializa o contrutror da classe pai,
+	 * passando o tipo (Usuario).
+	 * */
 	public UsuarioDAO() {
 		super(Usuarios.class);
 	}
+	
+	/**
+	 * @param Usuario
+	 * @return void
+	 * Salvar, Atualiza, Deletar e Listar todos os Usuarios.
+	 */
 	
 	public void salvarUsuario(Usuarios usuario) {
 		super.save(usuario);
 	}
 	
-	public boolean atualizarUsuario(Usuarios usuario) {
+	public void atualizarUsuario(Usuarios usuario) {
 		super.update(usuario);
-		return true;
 	}
 	
-	public boolean deletarUsuario(Usuarios usuario) {
+	public void deletarUsuario(Usuarios usuario) {
 		super.delete(usuario);
-		return true;
 	}
 	
 	public List<Usuarios> listarTodosUsuarios() {
@@ -46,6 +55,12 @@ public class UsuarioDAO extends GenericDAO<Integer, Usuarios>{
 	public Usuarios buscarPorId(Integer id) {
 		return super.getById(id);
 	}
+	
+	/**
+	 * @param email
+	 * @return Usuario
+	 * Retorna o usuario aparti do email.
+	 */
 	
 	public Usuarios buscarPorEmail(String email) {
 		Query query = (Query) super.createQuery("from Usuarios u where u.email=?");
@@ -58,16 +73,11 @@ public class UsuarioDAO extends GenericDAO<Integer, Usuarios>{
 		}
 	}
 	
-	public Usuarios buscarPorCpf(String cpf) {
-		Query query = (Query) super.createQuery("from Usuarios u where u.cpf=?");
-		query.setString(0, cpf);
-		
-		try {
-			return (Usuarios)query.uniqueResult();
-		} catch(NoResultException e){
-			return null;
-		}
-	}
+	/**
+	 * @param nome
+	 * @return List<Usuario>
+	 * Retorna uma lista de usuarios aparti do nome usuario.
+	 */
 	
 	@SuppressWarnings("unchecked")
 	public List<Usuarios> listarPorNome(String nomeUsuario) {
@@ -81,6 +91,12 @@ public class UsuarioDAO extends GenericDAO<Integer, Usuarios>{
 			return null;
 		}
 	}
+	
+	/**
+	 * @param email, senha
+	 * @return Usuarios
+	 * Retorna o usuario atravez do email e da senha.
+	 */
 	
 	public Usuarios buscarPorEmailSenha(String email, String senha) {
 		CriteriaBuilder criteriaBuilder = super.createCriteriaBuilder();

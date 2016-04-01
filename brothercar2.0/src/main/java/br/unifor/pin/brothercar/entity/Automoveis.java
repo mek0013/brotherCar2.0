@@ -39,7 +39,7 @@ public class Automoveis implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "usuarios_id", nullable = false)
-	private Usuarios motorista;
+	private Motoristas motorista;
 
 	public Integer getId() {
 		return id;
@@ -72,14 +72,13 @@ public class Automoveis implements Serializable{
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
-	
 
-	public Usuarios getUsuario() {
+	public Motoristas getMotorista() {
 		return motorista;
 	}
 
-	public void setUsuario(Usuarios usuario) {
-		this.motorista = usuario;
+	public void setMotorista(Motoristas motorista) {
+		this.motorista = motorista;
 	}
 
 	@Override

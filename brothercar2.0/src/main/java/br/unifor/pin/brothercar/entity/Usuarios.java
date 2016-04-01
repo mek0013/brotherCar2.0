@@ -2,73 +2,61 @@ package br.unifor.pin.brothercar.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * @author maycon
+ * @since 16/03/2016
+ */
+
 @XmlRootElement
 @Entity
 @Table(name = "usuarios")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuarios implements Serializable {
+
+	
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3108891161807276721L;
-
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-
-	@Column(nullable = false, length = 100)
+	
+	@Column(nullable = false)
 	private String nome;
-
-	@Column(nullable = false, length = 14, unique = true)
-	private String cpf;
-
-	@Column(nullable = true, length = 11, unique = true)
-	private String cnh;
-
+	
+	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_nascimento", nullable = false)
 	private Date dataNascimento;
-
-	@Column(unique = true, nullable = false)
+	
+	@Column(nullable = false, unique = true)
 	private String email;
-
+	
 	@Column(nullable = false)
 	private String senha;
 	
-	@Column(name = "quantidade_pontos", nullable = true)
-	private Integer quantidadePontos;
-	
-	@Column(nullable = false)
-	private Integer moedas;
-	
-	@Column(nullable = false, length = 1)
-	private String perfil;
-
 	@Column(nullable = false)
 	private boolean ativo;
-
-	@Column(nullable = false)
-	private boolean administrador;
-
-	@OneToMany(mappedBy = "motorista", targetEntity = Ofertas.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Ofertas> ofertas;
-
+	
+	/**
+	 * Gets E Sets
+	 * */
 	public Integer getId() {
 		return id;
 	}
@@ -83,22 +71,6 @@ public class Usuarios implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getCnh() {
-		return cnh;
-	}
-
-	public void setCnh(String cnh) {
-		this.cnh = cnh;
 	}
 
 	public Date getDataNascimento() {
@@ -125,30 +97,6 @@ public class Usuarios implements Serializable {
 		this.senha = senha;
 	}
 
-	public Integer getQuantidadePontos() {
-		return quantidadePontos;
-	}
-
-	public void setQuantidadePontos(Integer quantidadePontos) {
-		this.quantidadePontos = quantidadePontos;
-	}
-
-	public Integer getMoedas() {
-		return moedas;
-	}
-
-	public void setMoedas(Integer moedas) {
-		this.moedas = moedas;
-	}
-
-	public String getPerfil() {
-		return perfil;
-	}
-
-	public void setPerfil(String perfil) {
-		this.perfil = perfil;
-	}
-
 	public boolean isAtivo() {
 		return ativo;
 	}
@@ -157,23 +105,7 @@ public class Usuarios implements Serializable {
 		this.ativo = ativo;
 	}
 
-	public boolean isAdministrador() {
-		return administrador;
-	}
-
-	public void setAdministrador(boolean administrador) {
-		this.administrador = administrador;
-	}
-
-	public List<Ofertas> getOfertas() {
-		return ofertas;
-	}
-
-	public void setOfertas(List<Ofertas> ofertas) {
-		this.ofertas = ofertas;
-	}
-
-	/*
+	/**
 	 * (non-Javadoc)
 	 * 
 	 * @see java.lang.Object#hashCode()
@@ -187,7 +119,7 @@ public class Usuarios implements Serializable {
 		return result;
 	}
 
-	/*
+	/**
 	 * (non-Javadoc)
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)

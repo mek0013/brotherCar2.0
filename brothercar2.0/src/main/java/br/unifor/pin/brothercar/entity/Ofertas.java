@@ -1,6 +1,7 @@
 package br.unifor.pin.brothercar.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,7 +26,7 @@ public class Ofertas {
 	private Integer id;
 	
 	@Column(nullable=false)
-	private String statusOferta;
+	private Boolean statusOferta;
 	
 	@Column(nullable=false)
 	private String situacaoOferta;
@@ -34,20 +35,22 @@ public class Ofertas {
 	@Temporal(TemporalType.DATE)
 	private Date dataOferta;
 	
-	@Column(name = "hora_oferta")
-	@Temporal(TemporalType.TIME)
-	private Date horaOferta;
-	
-	@Column
+	@Column(name = "quantidade_vagas", nullable = false)
 	private Integer quantidadeVagas;
 	
-	@OneToOne
-	@JoinColumn(name = "caronas_id")
-	private Caronas carona;
+	@Column(nullable = false)
+	private Double quilometragem;
 	
-	@ManyToOne
+	@OneToOne
+	@JoinColumn(name = "trajeto_id")
+	private Trajetos trajetos;
+	
+	@OneToOne
 	@JoinColumn(name = "usuarios_id")
-	private Usuarios motorista;
+	private Motoristas motorista;
+	
+	@OneToMany(mappedBy = "oferta", targetEntity = Pedidos.class)
+	private List<Pedidos> listaPedidos;
 
 
 	public Integer getId() {
@@ -58,11 +61,11 @@ public class Ofertas {
 		this.id = id;
 	}
 
-	public String getStatusOferta() {
+	public Boolean getStatusOferta() {
 		return statusOferta;
 	}
 
-	public void setStatusOferta(String statusOferta) {
+	public void setStatusOferta(Boolean statusOferta) {
 		this.statusOferta = statusOferta;
 	}
 
@@ -74,14 +77,6 @@ public class Ofertas {
 		this.dataOferta = dataOferta;
 	}
 
-	public Date getHoraOferta() {
-		return horaOferta;
-	}
-
-	public void setHoraOferta(Date horaOferta) {
-		this.horaOferta = horaOferta;
-	}
-
 	public Integer getQuantidadeVagas() {
 		return quantidadeVagas;
 	}
@@ -90,19 +85,27 @@ public class Ofertas {
 		this.quantidadeVagas = quantidadeVagas;
 	}
 
-	public Caronas getCarona() {
-		return carona;
+	public Double getQuilometragem() {
+		return quilometragem;
 	}
 
-	public void setCarona(Caronas carona) {
-		this.carona = carona;
+	public void setQuilometragem(Double quilometragem) {
+		this.quilometragem = quilometragem;
 	}
 
-	public Usuarios getMotorista() {
+	public Trajetos getTrajetos() {
+		return trajetos;
+	}
+
+	public void setTrajetos(Trajetos trajetos) {
+		this.trajetos = trajetos;
+	}
+
+	public Motoristas getMotorista() {
 		return motorista;
 	}
 
-	public void setMotorista(Usuarios motorista) {
+	public void setMotorista(Motoristas motorista) {
 		this.motorista = motorista;
 	}
 

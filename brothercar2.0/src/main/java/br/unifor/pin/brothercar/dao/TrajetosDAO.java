@@ -11,30 +11,45 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
+import br.unifor.pin.brothercar.entity.Automoveis;
+import br.unifor.pin.brothercar.entity.PontoParada;
 import br.unifor.pin.brothercar.entity.Trajetos;
+
+/**
+ * @author maycon
+ * @since 16/03/2016
+ */
 
 @Repository
 public class TrajetosDAO extends GenericDAO<Integer, Trajetos>{
 
+	/**
+	 * Construtor para inicializa o contrutror da classe pai,
+	 * passando o tipo (Trajetos).
+	 * */
 	public TrajetosDAO() {
 		super(Trajetos.class);
 	}
 	
-	public void salvarTrajeto(Trajetos trajeto) {
+	/**
+	 * @param Trajetos
+	 * @return void
+	 * Salvar, Atualiza, Deletar e Listar todos os Trajetos.
+	 */
+	
+	public void salvarTrajetos(Trajetos trajeto) {
 		super.save(trajeto);
 	}
 	
-	public boolean atualizarTrajeto(Trajetos trajeto) {
+	public void atualizarTrajetos(Trajetos trajeto) {
 		super.update(trajeto);
-		return true;
 	}
 	
-	public boolean deletarTrajeto(Trajetos trajeto) {
+	public void deletarTrajetos(Trajetos trajeto) {
 		super.delete(trajeto);
-		return true;
 	}
 	
-	public List<Trajetos> listarTodosTrajetos() {
+	public List<Trajetos> listarTodosAutomoveis() {
 		return super.findAll();
 	}
 	
@@ -42,13 +57,36 @@ public class TrajetosDAO extends GenericDAO<Integer, Trajetos>{
 		return super.getById(id);
 	}
 	
-	public Trajetos buscarPorLatitudeLongitudeInicial(String latitudeInicial, String longitudeInicial) {
+	/**
+	 * @param nomeTrajeto
+	 * @return Automoveis
+	 * Retorna o Trajeto pelo nome do Trajeto.
+	 */
+	
+	public Trajetos buscarPorNome(String nomeTrajeto) {
+		Query query = (Query) super.createQuery("from Trajetos t where t.nome_trajeto=?");
+		query.setString(0, nomeTrajeto);
+		
+		try {
+			return (Trajetos)query.uniqueResult();
+		} catch(NoResultException e){
+			return null;
+		}
+	}
+	
+	/**
+	 * @param latitude_saida, longitude_saida
+	 * @return PontoParada
+	 * Busca um Trajetos pela latitude_saida e longitude_saida
+	 */
+	
+	public Trajetos buscarPorLatitudeLongitudeSaida(String latitudeSaida, String longitudeSaida) {
 		CriteriaBuilder criteriaBuilder = super.createCriteriaBuilder();
 		CriteriaQuery<Trajetos> criteriaQuery = criteriaBuilder.createQuery(Trajetos.class);
 		Root<Trajetos> trajeto = criteriaQuery.from(Trajetos.class);
 		Predicate restriction = criteriaBuilder.and(
-				criteriaBuilder.equal(trajeto.<String>get("latitude_inicial"), latitudeInicial),
-				criteriaBuilder.equal(trajeto.<String>get("longitude_inicial"), longitudeInicial)
+				criteriaBuilder.equal(trajeto.<String>get("latitude_saida"), latitudeSaida),
+				criteriaBuilder.equal(trajeto.<String>get("longitude_saida"), longitudeSaida)
 			);
 		criteriaQuery.where(criteriaBuilder.and(restriction));
 		
@@ -60,13 +98,19 @@ public class TrajetosDAO extends GenericDAO<Integer, Trajetos>{
 		}
 	}
 	
-	public Trajetos buscarPorLatitudeLongitudeFinal(String latitudeFinal, String longitudeFinal) {
+	/**
+	 * @param latitude_chegada, longitude_chegada
+	 * @return PontoParada
+	 * Busca um Trajetos pela latitude_chegada e longitude_chegada
+	 */
+	
+	public Trajetos buscarPorLatitudeLongitudeChegada(String latitudeChegada, String longitudeChegada) {
 		CriteriaBuilder criteriaBuilder = super.createCriteriaBuilder();
 		CriteriaQuery<Trajetos> criteriaQuery = criteriaBuilder.createQuery(Trajetos.class);
 		Root<Trajetos> trajeto = criteriaQuery.from(Trajetos.class);
 		Predicate restriction = criteriaBuilder.and(
-				criteriaBuilder.equal(trajeto.<String>get("latitude_final"), latitudeFinal),
-				criteriaBuilder.equal(trajeto.<String>get("longitude_final"), longitudeFinal)
+				criteriaBuilder.equal(trajeto.<String>get("latitude_chegada"), latitudeChegada),
+				criteriaBuilder.equal(trajeto.<String>get("longitude_chegada"), longitudeChegada)
 			);
 		criteriaQuery.where(criteriaBuilder.and(restriction));
 		
